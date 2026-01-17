@@ -1,4 +1,6 @@
+import { AbsensiActionsCard } from "@/app/components/AbsensiActionsCard";
 import { DashboardShell } from "@/app/components/DashboardShell";
+import { StatusListCard } from "@/app/components/StatusListCard";
 import { LineChart } from "@/app/components/charts/LineChart";
 
 const summaries = [
@@ -86,6 +88,21 @@ const performanceTrend = {
   labels: ["1", "5", "10", "15", "20", "25", "30"],
   values: [8, 7.5, 8.2, 7.8, 8.6, 8.4, 8.9],
 };
+
+const absensiActions = [
+  {
+    title: "Absen masuk",
+    note: "Scan wajah dan lokasi",
+    endpoint: "/absen/masuk",
+    tone: "bg-emerald-50 text-emerald-600",
+  },
+  {
+    title: "Absen pulang",
+    note: "Catat jam pulang",
+    endpoint: "/absen/pulang",
+    tone: "bg-sky-50 text-sky-600",
+  },
+];
 
 const teamStatus = [
   { nama: "Ayu Pratiwi", status: "Hadir" },
@@ -192,63 +209,13 @@ export default function EmployeeDashboard() {
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[1fr,1.2fr]">
-          <article className={cardSoft}>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Absensi hari ini
-              </h2>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500">
-                Today
-              </span>
-            </div>
-            <div className="mt-4 space-y-3">
-              {[
-                {
-                  title: "Absen masuk",
-                  note: "Scan wajah dan lokasi",
-                  endpoint: "/absen/masuk",
-                  tone: "bg-emerald-50 text-emerald-600",
-                },
-                {
-                  title: "Absen pulang",
-                  note: "Catat jam pulang",
-                  endpoint: "/absen/pulang",
-                  tone: "bg-sky-50 text-sky-600",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="flex items-start gap-3">
-                    <span
-                      className={`grid h-9 w-9 place-items-center rounded-lg ${item.tone}`}
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="h-4 w-4"
-                      >
-                        <path d="M12 8v5l3 3" />
-                        <circle cx="12" cy="12" r="9" />
-                      </svg>
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">
-                        {item.title}
-                      </p>
-                      <p className="text-xs text-slate-500">{item.note}</p>
-                    </div>
-                  </div>
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] uppercase tracking-wide text-slate-500">
-                    {item.endpoint}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </article>
+          <AbsensiActionsCard
+            title="Absensi hari ini"
+            badge="Today"
+            badgeClassName="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500"
+            actions={absensiActions}
+            className={cardSoft}
+          />
 
           <article className={cardBase}>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -280,43 +247,16 @@ export default function EmployeeDashboard() {
         </section>
 
         <section className="grid gap-4 lg:grid-cols-2">
-          <article className={cardBase}>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Status tim
-              </h2>
-              <span className="text-xs text-slate-400">Hari ini</span>
-            </div>
-            <div className="mt-4 space-y-3">
-              {teamStatus.map((member) => (
-                <div
-                  key={member.nama}
-                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-lg border border-dashed border-slate-200 bg-white px-4 py-3"
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="h-9 w-9 rounded-full bg-slate-100" />
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">
-                        {member.nama}
-                      </p>
-                      <p className="text-xs text-slate-500">{member.status}</p>
-                    </div>
-                  </div>
-                  <span
-                    className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
-                      member.status === "Hadir"
-                        ? "bg-emerald-50 text-emerald-600"
-                        : member.status === "Cuti"
-                          ? "bg-orange-50 text-orange-600"
-                          : "bg-slate-100 text-slate-600"
-                    }`}
-                  >
-                    {member.status}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </article>
+          <StatusListCard
+            title="Status tim"
+            subtitle="Hari ini"
+            items={teamStatus}
+            className={cardBase}
+            toneMap={{
+              Hadir: "bg-emerald-50 text-emerald-600",
+              Cuti: "bg-orange-50 text-orange-600",
+            }}
+          />
 
           <article className={cardBase}>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

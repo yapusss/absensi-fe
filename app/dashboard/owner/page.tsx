@@ -1,6 +1,7 @@
 import { DashboardShell } from "@/app/components/DashboardShell";
-import { BarChart } from "@/app/components/charts/BarChart";
-import { DonutChart } from "@/app/components/charts/DonutChart";
+import { AbsensiSummaryCard } from "@/app/components/AbsensiSummaryCard";
+import { StatusListCard } from "@/app/components/StatusListCard";
+import { WorkPerformanceCard } from "@/app/components/WorkPerformanceCard";
 
 const totals = [
   {
@@ -213,42 +214,18 @@ export default function OwnerDashboard() {
             </span>
           </div>
           <div className="grid gap-4 lg:grid-cols-3">
-            <article className={cardBase}>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
-                Distribusi kehadiran
-              </p>
-              <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-6">
-                <div className="h-40 w-40 sm:h-44 sm:w-44 sm:mx-0">
-                  <DonutChart
-                    labels={attendanceBreakdown.labels}
-                    values={attendanceBreakdown.values}
-                    colors={attendanceBreakdown.colors}
-                  />
-                </div>
-                <div className="space-y-2 text-xs text-slate-500">
-                  <p className="text-lg font-semibold text-slate-900">
-                    {attendanceBreakdown.values[0]}% hadir
-                  </p>
-                  <span className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-600">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                    Hadir {attendanceBreakdown.values[0]}
-                  </span>
-                  <span className="flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1 text-orange-600">
-                    <span className="h-2 w-2 rounded-full bg-orange-500" />
-                    Terlambat {attendanceBreakdown.values[1]}
-                  </span>
-                  <span className="flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-amber-600">
-                    <span className="h-2 w-2 rounded-full bg-amber-500" />
-                    Tidak hadir {attendanceBreakdown.values[2]}
-                  </span>
-                </div>
-              </div>
-            </article>
+            <AbsensiSummaryCard
+              eyebrow="Distribusi kehadiran"
+              labels={attendanceBreakdown.labels}
+              values={attendanceBreakdown.values}
+              colors={attendanceBreakdown.colors}
+              className={cardBase}
+            />
 
             <article className={cardBase}>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
+              <h2 className="text-lg font-semibold text-slate-900">
                 Jam masuk dan pulang
-              </p>
+              </h2>
               <div className="mt-4 overflow-x-auto">
                 <table className="w-full min-w-[420px] text-sm">
                   <thead>
@@ -283,59 +260,25 @@ export default function OwnerDashboard() {
               </div>
             </article>
 
-            <article className={cardBase}>
-              <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
-                Performa jam kerja
-              </p>
-              <div className="mt-4 h-44 sm:h-48">
-                <BarChart
-                  labels={workHourChart.labels}
-                  values={workHourChart.values}
-                  color="#fb7185"
-                />
-              </div>
-            </article>
+            <WorkPerformanceCard
+              labels={workHourChart.labels}
+              values={workHourChart.values}
+              className={cardBase}
+            />
           </div>
         </section>
 
         <section className="grid gap-4 md:grid-cols-2">
-          <article className={cardBase}>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Status karyawan
-              </h2>
-              <span className="text-xs text-slate-400">Hari ini</span>
-            </div>
-            <div className="mt-4 space-y-3">
-              {statusList.map((item) => (
-                <div
-                  key={item.nama}
-                  className="grid grid-cols-[1fr_auto] items-center gap-3 rounded-lg border border-dashed border-slate-200 bg-white px-4 py-3"
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="h-9 w-9 rounded-full bg-slate-100" />
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">
-                        {item.nama}
-                      </p>
-                      <p className="text-xs text-slate-500">{item.status}</p>
-                    </div>
-                  </div>
-                  <span
-                    className={`rounded-full px-3 py-1 text-[11px] font-semibold ${
-                      item.status === "Aktif"
-                        ? "bg-emerald-50 text-emerald-600"
-                        : item.status === "Cuti"
-                          ? "bg-orange-50 text-orange-600"
-                          : "bg-slate-100 text-slate-600"
-                    }`}
-                  >
-                    {item.status}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </article>
+          <StatusListCard
+            title="Status karyawan"
+            subtitle="Hari ini"
+            items={statusList}
+            className={cardBase}
+            toneMap={{
+              Aktif: "bg-emerald-50 text-emerald-600",
+              Cuti: "bg-orange-50 text-orange-600",
+            }}
+          />
 
           <article className={cardSoft}>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">

@@ -1,6 +1,7 @@
+import { AbsensiActionsCard } from "@/app/components/AbsensiActionsCard";
+import { AbsensiSummaryCard } from "@/app/components/AbsensiSummaryCard";
 import { DashboardShell } from "@/app/components/DashboardShell";
-import { BarChart } from "@/app/components/charts/BarChart";
-import { DonutChart } from "@/app/components/charts/DonutChart";
+import { WorkPerformanceCard } from "@/app/components/WorkPerformanceCard";
 
 const totals = [
   {
@@ -89,6 +90,21 @@ const attendanceBreakdown = {
   values: [83, 9, 8],
   colors: ["#22c55e", "#f97316", "#facc15"],
 };
+
+const assignActions = [
+  {
+    title: "Absen masuk",
+    note: "Verifikasi lokasi dan wajah",
+    endpoint: "/absen/masuk",
+    tone: "bg-emerald-50 text-emerald-600",
+  },
+  {
+    title: "Absen pulang",
+    note: "Catat jam pulang hari ini",
+    endpoint: "/absen/pulang",
+    tone: "bg-sky-50 text-sky-600",
+  },
+];
 
 const workHourChart = {
   labels: ["Ayu", "Damar", "Naya", "Raka", "Sinta", "Ilham"],
@@ -203,111 +219,27 @@ export default function HrDashboard() {
         </section>
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <article className={cardSoft}>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Assign absensi
-              </h2>
-              <span className="text-xs text-slate-400">Hari ini</span>
-            </div>
-            <div className="mt-4 space-y-3">
-              {[
-                {
-                  title: "Absen masuk",
-                  note: "Verifikasi lokasi dan wajah",
-                  endpoint: "/absen/masuk",
-                  tone: "bg-emerald-50 text-emerald-600",
-                },
-                {
-                  title: "Absen pulang",
-                  note: "Catat jam pulang hari ini",
-                  endpoint: "/absen/pulang",
-                  tone: "bg-sky-50 text-sky-600",
-                },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="flex items-start gap-3">
-                    <span
-                      className={`grid h-9 w-9 place-items-center rounded-lg ${item.tone}`}
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        className="h-4 w-4"
-                      >
-                        <path d="M12 8v5l3 3" />
-                        <circle cx="12" cy="12" r="9" />
-                      </svg>
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">
-                        {item.title}
-                      </p>
-                      <p className="text-xs text-slate-500">{item.note}</p>
-                    </div>
-                  </div>
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-[11px] uppercase tracking-wide text-slate-500">
-                    {item.endpoint}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </article>
+          <AbsensiActionsCard
+            title="Assign absensi"
+            badge="Hari ini"
+            actions={assignActions}
+            className={cardSoft}
+          />
 
-          <article className={cardBase}>
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-lg font-semibold text-slate-900">
-                Absensi hari ini
-              </h2>
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500">
-                Today
-              </span>
-            </div>
-            <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-6">
-              <div className="h-40 w-40 sm:h-44 sm:w-44 sm:mx-0">
-                <DonutChart
-                  labels={attendanceBreakdown.labels}
-                  values={attendanceBreakdown.values}
-                  colors={attendanceBreakdown.colors}
-                />
-              </div>
-              <div className="space-y-2 text-xs text-slate-500">
-                <p className="text-lg font-semibold text-slate-900">
-                  {attendanceBreakdown.values[0]}% hadir
-                </p>
-                <span className="flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-emerald-600">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  Hadir {attendanceBreakdown.values[0]}
-                </span>
-                <span className="flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1 text-orange-600">
-                  <span className="h-2 w-2 rounded-full bg-orange-500" />
-                  Terlambat {attendanceBreakdown.values[1]}
-                </span>
-                <span className="flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-amber-600">
-                  <span className="h-2 w-2 rounded-full bg-amber-500" />
-                  Tidak hadir {attendanceBreakdown.values[2]}
-                </span>
-              </div>
-            </div>
-          </article>
+          <AbsensiSummaryCard
+            title="Absensi hari ini"
+            badge="Today"
+            labels={attendanceBreakdown.labels}
+            values={attendanceBreakdown.values}
+            colors={attendanceBreakdown.colors}
+            className={cardBase}
+          />
 
-          <article className={cardBase}>
-            <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
-              Performa jam kerja
-            </p>
-            <div className="mt-4 h-44 sm:h-48">
-              <BarChart
-                labels={workHourChart.labels}
-                values={workHourChart.values}
-                color="#fb7185"
-              />
-            </div>
-          </article>
+          <WorkPerformanceCard
+            labels={workHourChart.labels}
+            values={workHourChart.values}
+            className={cardBase}
+          />
         </section>
 
         <section className="grid gap-4 lg:grid-cols-2">
@@ -387,9 +319,9 @@ export default function HrDashboard() {
           </article>
 
           <article className={cardBase}>
-            <p className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
+            <h2 className="text-lg font-semibold text-slate-900">
               Jam masuk dan pulang
-            </p>
+            </h2>
             <div className="mt-4 overflow-x-auto">
               <table className="w-full min-w-[420px] text-sm">
                 <thead>

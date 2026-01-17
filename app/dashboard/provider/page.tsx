@@ -116,6 +116,11 @@ const revenueTrend = {
   values: [28, 32, 35, 31, 42, 45, 48],
 };
 
+const topRevenueBusinesses = {
+  labels: ["Batik Reka", "Studio Kin", "Kedai Tiga", "Gudang Kopi", "Mitra Rasa"],
+  values: [5.4, 4.8, 3.2, 2.9, 2.4],
+};
+
 const cardBase =
   "min-w-0 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md";
 const cardSoft =
@@ -201,11 +206,14 @@ export default function ProviderDashboard() {
           </div>
           <div className="grid gap-4 lg:grid-cols-[1.2fr,1fr]">
             <article className={cardBase}>
-              <span className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
+              <h2 className="text-lg font-semibold text-slate-900">
                 Revenue trend
-              </span>
+              </h2>
               <div className="mt-4 h-36 sm:h-44">
-                <LineChart labels={revenueTrend.labels} values={revenueTrend.values} />
+                <LineChart
+                  labels={revenueTrend.labels}
+                  values={revenueTrend.values}
+                />
               </div>
               <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-500">
                 <span className="rounded-full bg-emerald-50 px-3 py-1 text-emerald-600">
@@ -217,9 +225,9 @@ export default function ProviderDashboard() {
               </div>
             </article>
             <article className={cardSoft}>
-              <span className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
+              <h2 className="text-lg font-semibold text-slate-900">
                 Pembayaran terbaru
-              </span>
+              </h2>
               <div className="mt-4 overflow-x-auto">
                 <table className="w-full min-w-[520px] text-sm">
                 <thead>
@@ -252,6 +260,37 @@ export default function ProviderDashboard() {
               </div>
             </article>
           </div>
+          <article className={cardBase}>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900">
+                  Kontributor revenue terbesar
+                </h3>
+                <p className="text-xs text-slate-400">
+                  Perbandingan pemasukan per usaha (bulan ini)
+                </p>
+              </div>
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs text-slate-500">
+                Top 5
+              </span>
+            </div>
+            <div className="mt-4 h-36 sm:h-44">
+              <LineChart
+                labels={topRevenueBusinesses.labels}
+                values={topRevenueBusinesses.values}
+                stroke="#0ea5e9"
+                fill="rgba(14,165,233,0.15)"
+              />
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-500">
+              <span className="rounded-full bg-sky-50 px-3 py-1 text-sky-600">
+                Tertinggi: Batik Reka
+              </span>
+              <span className="rounded-full bg-emerald-50 px-3 py-1 text-emerald-600">
+                Rp 5,4 jt / bulan
+              </span>
+            </div>
+          </article>
         </section>
 
         <section className="space-y-4">
@@ -265,9 +304,9 @@ export default function ProviderDashboard() {
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <article className={cardSoft}>
-              <span className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
+              <h2 className="text-lg font-semibold text-slate-900">
                 Owner perusahaan
-              </span>
+              </h2>
               <div className="mt-4 flex flex-col items-start gap-3 rounded-lg border border-dashed border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
                   <span className="grid h-9 w-9 place-items-center rounded-lg bg-orange-50 text-orange-600">
@@ -324,9 +363,9 @@ export default function ProviderDashboard() {
               </div>
             </article>
             <article className={cardSoft}>
-              <span className="text-[11px] uppercase tracking-[0.3em] text-slate-400">
+              <h2 className="text-lg font-semibold text-slate-900">
                 Data perusahaan
-              </span>
+              </h2>
               <div className="mt-4 flex flex-col items-start gap-3 rounded-lg border border-dashed border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-3">
                   <span className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-50 text-emerald-600">
